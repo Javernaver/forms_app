@@ -48,8 +48,26 @@ class _RegisterView extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatelessWidget {
+class _RegisterForm extends StatefulWidget {
   const _RegisterForm();
+
+  @override
+  State<_RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<_RegisterForm> {
+  bool _passwordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +84,12 @@ class _RegisterForm extends StatelessWidget {
             onChanged: registerCubit.usernameChanged,
             errorMessage: username.errorMessage,
             prefixIcon: Icons.person,
-            validator: (value) {
-              if (value == null || value.isEmpty || value.trim().isEmpty) {
-                return 'El nombre de usuario es requerido';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (value == null || value.isEmpty || value.trim().isEmpty) {
+            //     return 'El nombre de usuario es requerido';
+            //   }
+            //   return null;
+            // },
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
@@ -98,17 +116,25 @@ class _RegisterForm extends StatelessWidget {
             onChanged: registerCubit.passwordChanged,
             errorMessage: password.errorMessage,
             prefixIcon: Icons.password,
-            obscureText: true,
+            obscureText: !_passwordVisible,
+            suffixIcon:
+                !_passwordVisible ? Icons.visibility : Icons.visibility_off,
+            suffixIconOnPressed: () {
+              logger.i('suffixIconOnPressed');
+              setState(() {
+                _passwordVisible = !_passwordVisible;
+              });
+            },
             // suffixIcon: GestureDetector(
             //   onTap: () {},
             //   child: const Icon(Icons.remove_red_eye),
             // ),
-            validator: (value) {
-              if (value == null || value.isEmpty || value.trim().isEmpty) {
-                return 'El nombre de usuario es requerido';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (value == null || value.isEmpty || value.trim().isEmpty) {
+            //     return 'El nombre de usuario es requerido';
+            //   }
+            //   return null;
+            // },
           ),
           const SizedBox(height: 20),
           FilledButton.tonalIcon(

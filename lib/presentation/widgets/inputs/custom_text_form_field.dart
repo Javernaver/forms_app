@@ -12,7 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
 
-  final Function? prefixIconOnPressed;
+  final void Function()? suffixIconOnPressed;
 
   const CustomTextFormField({
     super.key,
@@ -24,7 +24,7 @@ class CustomTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.obscureText,
-    this.prefixIconOnPressed,
+    this.suffixIconOnPressed,
   });
 
   @override
@@ -51,10 +51,24 @@ class CustomTextFormField extends StatelessWidget {
         label: label != null ? Text(label!) : null,
         hintText: hint,
         errorText: errorMessage,
-        prefixIcon:
-            prefixIcon != null ? Icon(prefixIcon, color: colors.primary) : null,
-        suffixIcon:
-            suffixIcon != null ? Icon(suffixIcon, color: colors.primary) : null,
+        prefixIcon: prefixIcon != null
+            ? Icon(
+                prefixIcon,
+                color:
+                    errorMessage != null ? Colors.red.shade800 : colors.primary,
+              )
+            : null,
+        suffixIcon: suffixIcon != null
+            ? IconButton(
+                icon: Icon(
+                  suffixIcon,
+                  color: errorMessage != null
+                      ? Colors.red.shade800
+                      : colors.primary,
+                ),
+                onPressed: suffixIconOnPressed,
+              )
+            : null,
         // icon: Icon(Icons.abc, color: colors.primary),
       ),
     );
